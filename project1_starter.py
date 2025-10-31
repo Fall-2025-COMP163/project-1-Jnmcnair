@@ -24,9 +24,9 @@ def create_character(name, character_class):
             "name": name,
             "class": character_class,
             "level": level,         
-            "strength": stats["strength"],
-            "magic": stats["magic"],
-            "health": stats["health"],
+            "strength": stats[0],
+            "magic": stats[1],
+            "health": stats[2],
             "gold": 100
         }
         return new_character
@@ -63,23 +63,36 @@ def calculate_stats(character_class, level):
     
     return strength, magic, health # Return tuple values of stats
 
+#-----------------------------
+# Function 3 - saving character file
+#-----------------------------
 def save_character(character, filename):
     """
     Saves character to text file in specific format
     Returns: True if successful, False if error occurred
     
-    Required file format:
-    Character Name: [name]
-    Class: [class]
-    Level: [level]
-    Strength: [strength]
-    Magic: [magic]
-    Health: [health]
-    Gold: [gold]
     """
-    # TODO: Implement this function
-    # Remember to handle file errors gracefully
-    pass
+    
+    import os
+    # checking to see if character is a dictionary and filename is valid
+    if not isinstance(character, dict) or not filename:
+        return False # if not valid, return false
+    directory = os.path.dirname(filename) # get directory from filename
+    if directory and not os.path.exists(directory):
+        return False
+    
+    with open(filename, 'w') as file: #opens file in the write mode using with to make sure it closes afterwards
+        file.write(f"Character Name: {character['name']}\n") 
+        file.write(f"Class: {character['class']}\n")
+        file.write(f"Level: {character['level']}\n")
+        file.write(f"Strength: {character['strength']}\n")
+        file.write(f"Magic: {character['magic']}\n")
+        file.write(f"Health: {character['health']}\n")
+        file.write(f"Gold: {character['gold']}\n")# writing each key-value pair to the file to match the format and display stats
+    return True
+  
+
+
 
 def load_character(filename):
     """
