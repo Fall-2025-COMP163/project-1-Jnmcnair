@@ -14,14 +14,16 @@ def create_character(name, character_class):
     Creates a new character dictionary with calculated stats
     Returns: dictionary with keys: name, class, level, strength, magic, health, gold
     """
-    stats = calculate_stats(character_class)
+    level = 1
+    stats = calculate_stats(character_class, level)
     if character_class not in ["Warrior", "Mage", "Rogue", "Cleric"]:
         return None  # Invalid class 
     else: # if class is valid the character is created
+
         new_character = {
             "name": name,
             "class": character_class,
-            "level": 1,         
+            "level": level,         
             "strength": stats["strength"],
             "magic": stats["magic"],
             "health": stats["health"],
