@@ -6,6 +6,7 @@ Date: 10-31-25
 AI Usage: [Document any AI assistance used]
 Example: AI helped with file I/O error handling logic in save_character function
 """
+import os
 #-----------------------------
 # Function 1 - Create Character
 #-----------------------------
@@ -91,7 +92,9 @@ def save_character(character, filename):
         file.write(f"Gold: {character['gold']}\n")# writing each key-value pair to the file to match the format and display stats
     return True
   
-
+#-----------------------------
+# Function 4 - Loading saved character file
+#-----------------------------
 
 
 def load_character(filename):
@@ -99,9 +102,30 @@ def load_character(filename):
     Loads character from text file
     Returns: character dictionary if successful, None if file not found
     """
-    # TODO: Implement this function
-    # Remember to handle file not found errors
-    pass
+    if not os.path.exists(filename): # checking to see if file exists if not returns none
+        return None
+    with open(filename, 'r') as file: #opens file in read mode
+        lines = file.readlines()
+    character = {}
+    for line in lines: # iterating through each line to extract key-value pairs for each stat
+        key, value = line.strip().split(": ")
+        if key == "Character Name":
+            character["name"] = value
+        elif key == "Class":
+            character["class"] = value
+        elif key == "Level":
+            character["level"] = int(value)
+        elif key == "Strength":
+            character["strength"] = int(value)
+        elif key == "Magic":
+            character["magic"] = int(value)
+        elif key == "Health":
+            character["health"] = int(value)
+        elif key == "Gold":
+            character["gold"] = int(value)
+    return character
+
+    
 
 def display_character(character):
     """
