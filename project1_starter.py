@@ -168,9 +168,17 @@ def level_up(character):
 if __name__ == "__main__":
     print("=== CHARACTER CREATOR ===")
     print("Test your functions here!")
+    char = create_character("Rhapsody", "Warrior")
+    display_character(char)
     
-    # Example usage:
-    # char = create_character("TestHero", "Warrior")
-    # display_character(char)
-    # save_character(char, "my_character.txt")
-    # loaded = load_character("my_character.txt")
+    print("\nSaving character...")
+    save_character(char, "Rhapsody.txt")
+    
+    print("\nLoading character...")
+    loaded = load_character("Rhapsody.txt")
+    display_character(loaded)
+
+    print("\nLeveling up character...")
+    level_up(loaded)
+    display_character(loaded)
+
