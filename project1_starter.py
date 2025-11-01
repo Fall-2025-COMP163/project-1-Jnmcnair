@@ -4,9 +4,12 @@ Name: Jonathan McNair
 Date: 10-31-25
 
 AI Usage: [Document any AI assistance used]
-Example: AI helped with file I/O error handling logic in save_character function
+Example: Ai helped with Unicodeencoding error in save_character function and name error in load_character function as well as fixing small syntax errors throughout
 """
+# Two bonus creative elements added:1st new Dexterity, Charisma, Intellect stats for characters
+#2nd Different starting gold amounts based on character class
 import os
+
 #-----------------------------
 # Function 1 - Create Character
 #-----------------------------
@@ -28,7 +31,10 @@ def create_character(name, character_class):
             "strength": stats[0],
             "magic": stats[1],
             "health": stats[2],
-            "gold": 100
+            "gold": calculate_initial_gold(character_class),
+            "dexterity": stats[3],
+            "charisma": stats[4],
+            "intellect": stats[5]
         }
         return new_character
 
@@ -47,22 +53,52 @@ def calculate_stats(character_class, level):
         strength = 14 + (level * 2)  
         magic = 6 + level          
         health = 140 + (level * 5)
+        dexterity = 10 + level
+        charisma = 6 + level
+        intellect = 8 + level
     elif character_class.lower() == "mage":# low strength, high magic, medium health
         strength = 6 + level         
         magic = 14 + (level * 2)    
         health = 100 + (level * 3)
+        dexterity = 8 + level
+        charisma = 8 + level
+        intellect = 14 + (level * 2)
     elif character_class.lower() == "rogue":# medium strength, medium magic, low health
         strength = 10 + level        
         magic = 10 + level          
         health = 60 + (level * 2)
+        dexterity = 14 + (level * 2)
+        charisma = 10 + level
+        intellect = 8 + level
     elif character_class.lower() == "cleric":# medium strength, high magic, high health
         strength = 10 + level        
         magic = 14 + (level * 2)    
         health = 140 + (level * 4)
+        dexterity = 14 + (level * 2)
+        charisma = 10 + level
+        intellect = 8 + level
     else: 
         return None  # Invalid class
     
     return strength, magic, health # Return tuple values of stats
+
+#-----------------------------
+# Function 2.5 - Calculate Initial Gold
+#-----------------------------
+
+def calculate_initial_gold(character_class):
+    """
+    Calculates starting gold based on character class.
+    Returns: character gold amount.
+    """
+    class_gold = {
+        "Warrior": 150,
+        "Mage": 100,
+        "Rogue": 200,
+        "Cleric": 125
+    }
+    return class_gold.get(character_class, 100)
+
 
 #-----------------------------
 # Function 3 - saving character file
@@ -74,7 +110,7 @@ def save_character(character, filename):
     
     """
     
-    import os
+
     # checking to see if character is a dictionary and filename is valid
     if not isinstance(character, dict) or not filename:
         return False # if not valid, return false
@@ -82,14 +118,18 @@ def save_character(character, filename):
     if directory and not os.path.exists(directory):
         return False
     
-    with open(filename, 'w') as file: #opens file in the write mode using with to make sure it closes afterwards
-        file.write(f"Character Name: {character['name']}\n") 
-        file.write(f"Class: {character['class']}\n")
-        file.write(f"Level: {character['level']}\n")
-        file.write(f"Strength: {character['strength']}\n")
-        file.write(f"Magic: {character['magic']}\n")
-        file.write(f"Health: {character['health']}\n")
-        file.write(f"Gold: {character['gold']}\n")# writing each key-value pair to the file to match the format and display stats
+    with open(filename, 'w', encoding='utf-8') as f:        
+        f.write(f'Character Name: {character["name"]}\n')
+        f.write(f'Character Class: {character["class"]}\n')
+        f.write(f'Character Level: {character["level"]}\n')
+        f.write(f'Character Strength: {character["strength"]}\n')
+        f.write(f'Character Magic: {character["magic"]}\n')
+        f.write(f'Character Health: {character["health"]}\n')
+        f.write(f'Character Dexterity: {character["dexterity"]}\n')
+        f.write(f'Character Charisma: {character["charisma"]}\n')
+        f.write(f'Character Intellect: {character["intellect"]}\n')
+        f.write(f'Character Gold: {character["gold"]}\n')
+
     return True
   
 #-----------------------------
@@ -102,28 +142,24 @@ def load_character(filename):
     Loads character from text file
     Returns: character dictionary if successful, None if file not found
     """
+    import os
     if not os.path.exists(filename): # checking to see if file exists if not returns none
         return None
-    with open(filename, 'r') as file: #opens file in read mode
-        lines = file.readlines()
-    character = {}
-    for line in lines: # iterating through each line to extract key-value pairs for each stat
-        key, value = line.strip().split(": ")
-        if key == "Character Name":
-            character["name"] = value
-        elif key == "Class":
-            character["class"] = value
-        elif key == "Level":
-            character["level"] = int(value)
-        elif key == "Strength":
-            character["strength"] = int(value)
-        elif key == "Magic":
-            character["magic"] = int(value)
-        elif key == "Health":
-            character["health"] = int(value)
-        elif key == "Gold":
-            character["gold"] = int(value)
-    return character
+    load = {}
+    with open(filename, 'r') as f:
+        for line in f:
+            if ':' not in line:
+                continue
+            key, value = line.strip().split(':', 1)
+            key = key.lower().replace('character', '').strip()
+            value = value.strip()
+            if value.isdigit():
+                value = int(value)
+            load[key] = value
+    return load
+
+        
+
 
     
 #-----------------------------
@@ -144,6 +180,9 @@ def display_character(character):
     print(f"Strength: {character['strength']}")
     print(f"Magic: {character['magic']}")
     print(f"Health: {character['health']}")
+    print(f"Dexterity: {character['dexterity']}")
+    print(f"Charisma: {character['charisma']}")
+    print(f"Intellect: {character['intellect']}")
     print(f"Gold: {character['gold']}")
     
 #-----------------------------
@@ -161,7 +200,9 @@ def level_up(character):
     character['strength'] = stats[0]
     character['magic'] = stats[1]
     character['health'] = stats[2]
-    
+    character['dexterity'] = stats[3]
+    character['charisma'] = stats[4]
+    character['intellect'] = stats[5]
 
 
 # Main program area (optional - for testing your functions)
