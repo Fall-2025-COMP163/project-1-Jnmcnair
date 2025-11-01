@@ -97,3 +97,30 @@ Modifying protected files will result in automatic academic integrity violation
 Implementation (70%): Function correctness, file operations, error handling
 
 Interview (30%): Code explanation and live coding challenge
+
+What's your RPG world about?
+
+The game is a DnD campaign in a fantasy world focused on rebuilding after a dark age. The four character classes (Warrior, Mage, Rogue, Cleric) each play a vital role in restoring the kingdom. Each class have their own expertise and unique skillset.
+
+Why did you choose your stat formulas?
+
+I wanted to keep the baseline around 10 for the base stat points because thats what it has been in a previous DnD campain that I have played. The calculations being in increments of 4 were just to thoroughly set each characters advantages and disadvantages while not being too under/overpowered.
+
+Did you add anything unique?
+The main creative additions were expanding the character stats to include three new core attributes being Dexterity, Charisma, and Intellect. This makes character specialization much deeper and allows for unique builds across all four classes. I also added a gold calculation system which calculated gold based on level and class of your character.
+
+AI Usage: What AI assistance did you use and where?
+Gemini AI was primarily used for debugging and error resolution. It was used to help fix the Unicodeencoding error in the load_character function and helped resolve a NameError in the save character function. It was also used for small synatx errors throughtout the entire project.
+
+Clear instructions for testing your code
+
+The code within the if __name__ == "__main__": block will automatically run a full test sequence:
+
+Creates a Level 1 Warrior.
+
+Saves the Warrior's data to a text file (Rhapsody.txt).
+
+Loads the data back from the file.
+
+Calls the level_up function to check that the character's level and all seven stats (including gold) are correctly recalculated.
+
