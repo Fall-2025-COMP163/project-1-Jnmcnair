@@ -126,34 +126,43 @@ def load_character(filename):
     return character
 
     
-
+#-----------------------------
+# Function 4 - Displays character sheet
+#-----------------------------
 def display_character(character):
     """
     Prints formatted character sheet
     Returns: None (prints to console)
     
-    Example output:
-    === CHARACTER SHEET ===
-    Name: Aria
-    Class: Mage
-    Level: 1
-    Strength: 5
-    Magic: 15
-    Health: 80
-    Gold: 100
     """
-    # TODO: Implement this function
-    pass
-
+    if character is None or not isinstance(character, dict):
+        return None
+    print("=== CHARACTER SHEET ===") #printing out each stat in the formatted way
+    print(f"Name: {character['name']}")
+    print(f"Class: {character['class']}")
+    print(f"Level: {character['level']}")
+    print(f"Strength: {character['strength']}")
+    print(f"Magic: {character['magic']}")
+    print(f"Health: {character['health']}")
+    print(f"Gold: {character['gold']}")
+    
+#-----------------------------
+# Function 5 - Level Up Character
+#-----------------------------
 def level_up(character):
     """
     Increases character level and recalculates stats
     Modifies the character dictionary directly
     Returns: None
     """
-    # TODO: Implement this function
-    # Remember to recalculate stats for the new level
-    pass
+    
+    character['level'] += 1  # Increase level by +1
+    stats = calculate_stats(character['class'], character['level'])
+    character['strength'] = stats[0]
+    character['magic'] = stats[1]
+    character['health'] = stats[2]
+    
+
 
 # Main program area (optional - for testing your functions)
 if __name__ == "__main__":
