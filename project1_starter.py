@@ -7,7 +7,7 @@ AI Usage: [Document any AI assistance used]
 Example: Ai helped with Unicodeencoding error in save_character function and name error in load_character function as well as fixing small syntax errors throughout
 """
 # Two bonus creative elements added:1st new Dexterity, Charisma, Intellect stats for characters
-#2nd Different starting gold amounts based on character class
+#2nd Different starting gold amounts based on character class and level
 import os
 
 #-----------------------------
@@ -79,8 +79,12 @@ def calculate_stats(character_class, level):
         intellect = 8 + level
     else: 
         return None  # Invalid class
-    
-    return strength, magic, health # Return tuple values of stats
+    gold = 100 + (level * 50)
+    if character_class.lower() == "rogue":
+        gold += 50*level
+    elif character_class.lower() == "warrior":
+        gold += 25 * level
+    return strength, magic, health, dexterity, charisma, intellect, gold # Return tuple values of stats
 
 #-----------------------------
 # Function 2.5 - Calculate Initial Gold
